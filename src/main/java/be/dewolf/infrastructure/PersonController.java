@@ -1,6 +1,7 @@
 package be.dewolf.infrastructure;
 
 import be.dewolf.model.Person;
+import be.dewolf.rest.PersonTO;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by yannis on 12/01/17.
@@ -30,20 +32,24 @@ public class PersonController {
 
     @ResponseBody
     @RequestMapping(path = "/person/all")
-    public List<Person> getPersons() {
-        List<Person> all = personRepository.findAll();
+    public List<PersonTO> getPersons() {
+        List<PersonTO> all = personRepository.findAll()
+                .stream()
+                .map(p -> new PersonTO(p.getId(), p.getFirstName(), p.getLastName()))
+                .collect(Collectors.toList());
         all.forEach(LOGGER::info);
         return all;
     }
 
     @RequestMapping(path = "/person/create", method = RequestMethod.POST)
-    public ResponseEntity<Person> createPerson() {
+    public ResponseEntity<PersonTO> createPerson() {
+
         Person person = new Person(nextSessionId(), nextSessionId());
         Person save = personRepository.save(person);
-
         LOGGER.info("saved person " + save);
 
-        return new ResponseEntity<Person>(save, HttpStatus.OK);
+        return new ResponseEntity<PersonTO>(new PersonTO(save.getId(), save.getFirstName(), save.getLastName()), HttpStatus.OK);
+
     }
 
     private String nextSessionId() {

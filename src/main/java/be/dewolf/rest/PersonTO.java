@@ -1,39 +1,33 @@
-package be.dewolf.model;
+package be.dewolf.rest;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
-import javax.persistence.*;
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 /**
- * Created by yannis on 12/01/17.
+ * Created by yannis on 14/01/17.
  */
-@Entity
-@Table(name = "PERSON")
-public class Person {
+public class PersonTO {
 
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "first_name")
+    private long id;
     private String firstName;
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "creation_time")
-    private LocalDateTime localDateTime;
 
-    protected Person() {}
-
-    public Person(String firstName, String lastName) {
+    public PersonTO(
+            @JsonProperty("id") long id,
+            @JsonProperty("firstName") String firstName,
+            @JsonProperty("lastName") String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.localDateTime = LocalDateTime.now();
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -45,17 +39,12 @@ public class Person {
         return lastName;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
-
     @Override
     public String toString() {
-        return "Person{" +
+        return "PersonTO{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", localDateTime=" + localDateTime +
                 '}';
     }
 }
