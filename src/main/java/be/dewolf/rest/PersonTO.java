@@ -1,11 +1,9 @@
 package be.dewolf.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 /**
@@ -17,14 +15,18 @@ public class PersonTO {
     private String firstName;
     private String lastName;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime localDateTime;
 
     public PersonTO(
             @JsonProperty("id") long id,
             @JsonProperty("firstName") String firstName,
-            @JsonProperty("lastName") String lastName) {
+            @JsonProperty("lastName") String lastName,
+            @JsonProperty("localDateTime") LocalDateTime localDateTime) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.localDateTime = localDateTime;
     }
 
     public long getId() {
@@ -39,12 +41,17 @@ public class PersonTO {
         return lastName;
     }
 
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+
     @Override
     public String toString() {
         return "PersonTO{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", localDateTime=" + localDateTime +
                 '}';
     }
 }

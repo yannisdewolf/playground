@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +36,7 @@ public class PersonController {
     public List<PersonTO> getPersons() {
         List<PersonTO> all = personRepository.findAll()
                 .stream()
-                .map(p -> new PersonTO(p.getId(), p.getFirstName(), p.getLastName()))
+                .map(p -> new PersonTO(p.getId(), p.getFirstName(), p.getLastName(), LocalDateTime.now()))
                 .collect(Collectors.toList());
         all.forEach(LOGGER::info);
         return all;
@@ -48,7 +49,7 @@ public class PersonController {
         Person save = personRepository.save(person);
         LOGGER.info("saved person " + save);
 
-        return new ResponseEntity<PersonTO>(new PersonTO(save.getId(), save.getFirstName(), save.getLastName()), HttpStatus.OK);
+        return new ResponseEntity<PersonTO>(new PersonTO(save.getId(), save.getFirstName(), save.getLastName(), LocalDateTime.now()), HttpStatus.OK);
 
     }
 
