@@ -23,7 +23,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringBootTest(classes = DbappApplication.class)
+@SpringBootTest
 @Transactional
 @TestPropertySource(locations="classpath:test.properties")
 public class ApplicationIT {
@@ -75,23 +75,36 @@ public class ApplicationIT {
         ObjectMapper mapper = new ObjectMapper();
         PersonTO personTO = mapper.readValue(contentAsString, PersonTO.class);
         Assert.assertNotNull(personTO);
-        System.out.println(personTO);
         Assert.assertNotEquals(0, personTO.getId());
     }
 
     @Test
     public void verifiesGreetingpageLoads() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/greeting"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+        verifyPageLoads("/greeting.html");
     }
 
     @Test
     public void verifiesHomepageLoads() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/"))
+        verifyPageLoads("/");
+    }
+
+    @Test
+    public void verifiesSubdirectorypageLoadsWanneerHtmlPaginaWordtToegevoegd() throws Exception {
+        verifyPageLoads("/subdirectory/index.html");
+    }
+
+    private void verifyPageLoads(String urlTemplate) throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get(urlTemplate))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-        .andDo(MockMvcResultHandlers.print());
+                .andDo(MockMvcResultHandlers.print());
+    }
 
 
+    @Test
+    public void verifiesSubdirectorypageDoesNOTLoadWhenHtmlPageIsNotSpecified() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/subdirectory"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andDo(MockMvcResultHandlers.print());
     }
 
 }
