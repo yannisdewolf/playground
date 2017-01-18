@@ -1,10 +1,13 @@
 package be.dewolf.model;
 
+import be.dewolf.util.DateTimeConverter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by yannis on 12/01/17.
@@ -23,6 +26,7 @@ public class Person {
     private String lastName;
 
     @Column(name = "creation_time")
+    @Convert(converter = DateTimeConverter.class)
     private LocalDateTime localDateTime;
 
     protected Person() {}
