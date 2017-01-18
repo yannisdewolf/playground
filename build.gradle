@@ -11,8 +11,8 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'application'
 
 jar {
 	baseName = 'dbapp'

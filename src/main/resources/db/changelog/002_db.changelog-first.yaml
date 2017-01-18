@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: addColumn-example
+      author: liquibase-docs
+      changes:
+      - modifyDataType:
+          tableName: lampen
+          columnName: CREATION_TIME
+          newDataType: DATETIME
+
