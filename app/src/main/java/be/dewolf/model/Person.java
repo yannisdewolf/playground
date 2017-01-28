@@ -3,6 +3,7 @@ package be.dewolf.model;
 import be.dewolf.util.DateTimeConverter;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.Date;
 /**
  * Created by yannis on 12/01/17.
  */
+@Audited
 @Entity
 @Table(name = "PERSON")
 public class Person {
